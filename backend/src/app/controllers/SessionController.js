@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 
 // sha-256: meetapp1026${20-09}
 
+import authConfig from '../../config/auth'
 import User from '../models/User'
 
 class SessionController {
@@ -26,8 +27,8 @@ class SessionController {
         name,
         email
       },
-      token: jwt.sign({ id }, '0a74e76b157911e6534188011bfbbb16320657f02063bec5813fa4cd094c6216', {
-        expiresIn: '7d',
+      token: jwt.sign({ id }, authConfig.secret, {
+        expiresIn: authConfig.expiresIn,
       }),
     });
   }
