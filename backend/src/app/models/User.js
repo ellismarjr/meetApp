@@ -1,6 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
 import bcrypt from 'bcryptjs'
-import { userInfo } from 'os';
 
 class User extends Model {
   static init(sequelize) {
