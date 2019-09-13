@@ -25,6 +25,6 @@ routes.put(
   MeetupController.update
 );
 routes.get('/meetups', MeetupController.index);
-routes.delete('/meetups:meetupId', MeetupController.delete);
+routes.delete('/meetups/:meetupId', MeetupController.delete);
 
 export default routes;
