@@ -5,6 +5,20 @@ import Meetup from '../models/Meetup';
 import File from '../models/File';
 
 class MeetupController {
+  async index(req, res) {
+    const meetups = await Meetup.findAll({
+      where: { user_id: req.userId },
+      attributes: ['id', 'title', 'description', 'location', 'date', 'banner'],
+      include: [
+        {
+          model: File,
+          attributes: ['name', 'path', 'url'],
+        },
+      ],
+    });
+
+    return res.json(meetups);
+  }
   async store(req, res) {
     const schema = Yup.object().shape({
       title: Yup.string().required(),
@@ -103,6 +117,12 @@ class MeetupController {
     const meetup = await checkUserMeetup.update(req.body);
 
     return res.json(meetup);
+  }
+
+  async delete(req, res) {
+    const meetup = await Meetup.findByPk(req.params.id);
+
+    return res.json();
   }
 }
 

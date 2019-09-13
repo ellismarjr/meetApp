@@ -24,5 +24,7 @@ routes.put(
   upload.single('file'),
   MeetupController.update
 );
+routes.get('/meetups', MeetupController.index);
+routes.delete('/meetups:meetupId', MeetupController.delete);
 
 export default routes;
