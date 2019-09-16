@@ -7,7 +7,7 @@ import File from '../models/File';
 class MeetupController {
   async index(req, res) {
     const meetups = await Meetup.findAll({
-      where: { user_id: req.userId },
+      where: { provider_id: req.userId },
       attributes: ['id', 'title', 'description', 'location', 'date', 'banner'],
       include: [
         {
@@ -55,7 +55,7 @@ class MeetupController {
       description,
       location,
       date,
-      user_id: req.userId,
+      provider_id: req.userId,
       banner: banner_id,
     });
 
@@ -82,7 +82,7 @@ class MeetupController {
     const meetupId = req.params.meetupId;
 
     const checkUserMeetup = await Meetup.findOne({
-      where: { user_id: req.userId, id: meetupId },
+      where: { provider_id: req.userId, id: meetupId },
     });
 
     if (!checkUserMeetup) {
@@ -129,7 +129,7 @@ class MeetupController {
     /**
      * Check meetup belong to user
      */
-    if (meetup.user_id !== req.userId) {
+    if (meetup.provider_id !== req.userId) {
       return res
         .status(401)
         .json({ error: "You don't have permission to cancel this meetup" });
