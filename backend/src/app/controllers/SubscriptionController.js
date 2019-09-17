@@ -1,7 +1,10 @@
 import { isBefore } from 'date-fns';
+
 import Meetup from '../models/Meetup';
 import Subscription from '../models/Subscription';
 import User from '../models/User';
+
+import Mail from '../../lib/mail';
 
 class SubscriptionController {
   async store(req, res) {
@@ -57,6 +60,12 @@ class SubscriptionController {
     const subscription = await Subscription.create({
       user_id: user.id,
       meetup_id: meetup.id,
+    });
+
+    await Mail.sendMail({
+      to: `${meetup.User.name} <${meetup.User.email}>`,
+      subject: 'Inscrição Confirmada!',
+      text: 'Sua inscrição está confirmada!',
     });
 
     return res.json(subscription);
