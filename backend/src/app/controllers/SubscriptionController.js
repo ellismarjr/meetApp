@@ -1,10 +1,11 @@
-import { isBefore } from 'date-fns';
+import { isBefore, format } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 
 import Meetup from '../models/Meetup';
 import Subscription from '../models/Subscription';
 import User from '../models/User';
 
-import Mail from '../../lib/mail';
+import Mail from '../../lib/Mail';
 
 class SubscriptionController {
   async store(req, res) {
@@ -65,7 +66,16 @@ class SubscriptionController {
     await Mail.sendMail({
       to: `${meetup.User.name} <${meetup.User.email}>`,
       subject: 'Inscrição Confirmada!',
-      text: 'Sua inscrição está confirmada!',
+      template: 'registration',
+      context: {
+        name: meetup.User.name,
+        title: meetup.title,
+        description: meetup.description,
+        location: meetup.location,
+        date: format(meetup.date, "'dia' dd 'de' MMMM', às' H:mm'h'", {
+          locale: pt,
+        }),
+      },
     });
 
     return res.json(subscription);
