@@ -1,4 +1,4 @@
-import { isBefore, format } from 'date-fns';
+import { isBefore, format, startOfHour, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import { Op } from 'sequelize';
 
@@ -6,14 +6,12 @@ import Meetup from '../models/Meetup';
 import Subscription from '../models/Subscription';
 import User from '../models/User';
 import File from '../models/File';
+import Notification from '../schemas/Notification';
 
 import Mail from '../../lib/Mail';
 
 class SubscriptionController {
   async index(req, res) {
-    /**
-     * List all subscription that user subscribe
-     */
     const subscription = await Subscription.findAll({
       where: { user_id: req.userId },
 
@@ -100,6 +98,18 @@ class SubscriptionController {
     const subscription = await Subscription.create({
       user_id: user.id,
       meetup_id: meetup.id,
+    });
+
+    /**
+     * Notify meetup provider
+     */
+    const formattedDate = format(meetup.date, "dd 'de' MMMM', às' H:mm'h'", {
+      locale: pt,
+    });
+
+    await Notification.create({
+      content: `Novo inscrição do ${user.name} no meetup ${meetup.title} do dia ${formattedDate}`,
+      user: meetup.provider_id,
     });
 
     await Mail.sendMail({

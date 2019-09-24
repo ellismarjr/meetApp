@@ -6,6 +6,7 @@ import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import MeetupController from './app/controllers/MeetupController';
 import SubscriptionController from './app/controllers/SubscriptionController';
+import NotificationController from './app/controllers/NotificationController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -31,5 +32,7 @@ routes.delete('/meetups/:meetupId', MeetupController.delete);
 routes.post('/meetups/register/:meetupId', SubscriptionController.store);
 
 routes.get('/subscription', SubscriptionController.index);
+
+routes.get('/notifications', NotificationController.index);
 
 export default routes;
