@@ -1,13 +1,52 @@
 import { isBefore, format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
+import { Op } from 'sequelize';
 
 import Meetup from '../models/Meetup';
 import Subscription from '../models/Subscription';
 import User from '../models/User';
+import File from '../models/File';
 
 import Mail from '../../lib/Mail';
 
 class SubscriptionController {
+  async index(req, res) {
+    /**
+     * List all subscription that user subscribe
+     */
+    const subscription = await Subscription.findAll({
+      where: { user_id: req.userId },
+
+      include: [
+        {
+          model: Meetup,
+          where: {
+            date: {
+              [Op.gt]: new Date(),
+            },
+          },
+          attributes: [
+            'id',
+            'title',
+            'description',
+            'location',
+            'date',
+            'banner',
+          ],
+          order: [['date', 'DESC']],
+          include: [
+            {
+              model: File,
+              attributes: ['name', 'path', 'url'],
+            },
+          ],
+        },
+      ],
+    });
+
+    return res.json(subscription);
+  }
+
   async store(req, res) {
     const user = await User.findByPk(req.userId);
     const meetup = await Meetup.findByPk(req.params.meetupId, {
@@ -69,6 +108,7 @@ class SubscriptionController {
       template: 'registration',
       context: {
         name: meetup.User.name,
+        user: user.name,
         title: meetup.title,
         description: meetup.description,
         location: meetup.location,
