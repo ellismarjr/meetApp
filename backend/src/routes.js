@@ -29,9 +29,10 @@ routes.put(
 routes.get('/meetups', MeetupController.index);
 routes.delete('/meetups/:meetupId', MeetupController.delete);
 
-routes.post('/meetups/register/:meetupId', SubscriptionController.store);
+routes.post('/meetups/subscriptions/:meetupId', SubscriptionController.store);
 
-routes.get('/subscription', SubscriptionController.index);
+routes.get('/subscriptions', SubscriptionController.index);
+routes.delete('/subscriptions/:id', SubscriptionController.delete);
 
 routes.get('/notifications', NotificationController.index);
 routes.put('/notifications/:id', NotificationController.update);

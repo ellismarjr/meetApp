@@ -130,6 +130,37 @@ class SubscriptionController {
 
     return res.json(subscription);
   }
+
+  async delete(req, res) {
+    const subscription = await Subscription.findByPk(req.params.id, {
+      where: { user_id: req.userId },
+      include: [
+        {
+          model: Meetup,
+          attributes: ['date'],
+        },
+      ],
+    });
+
+    if (!subscription) {
+      return res.status(400).json({ error: 'Subscription does not exist!' });
+    }
+
+    if (subscription.user_id !== req.userId) {
+      return res
+        .status(401)
+        .json({ error: "You don't have permission to cancel this meetup" });
+    }
+
+    if (isBefore(subscription.Meetup.date, new Date())) {
+      return res
+        .status(401)
+        .json({ error: "You don't have permission to cancel past meetup" });
+    }
+    await subscription.destroy();
+
+    return res.json(subscription);
+  }
 }
 
 export default new SubscriptionController();
