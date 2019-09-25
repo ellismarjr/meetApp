@@ -8,7 +8,8 @@ import User from '../models/User';
 import File from '../models/File';
 import Notification from '../schemas/Notification';
 
-import Mail from '../../lib/Mail';
+import Queue from '../../lib/Queue';
+import SubscriptionMail from '../jobs/SubscriptionMail';
 
 class SubscriptionController {
   async index(req, res) {
@@ -112,20 +113,9 @@ class SubscriptionController {
       user: meetup.provider_id,
     });
 
-    await Mail.sendMail({
-      to: `${meetup.User.name} <${meetup.User.email}>`,
-      subject: 'Inscrição Confirmada!',
-      template: 'registration',
-      context: {
-        name: meetup.User.name,
-        user: user.name,
-        title: meetup.title,
-        description: meetup.description,
-        location: meetup.location,
-        date: format(meetup.date, "'dia' dd 'de' MMMM', às' H:mm'h'", {
-          locale: pt,
-        }),
-      },
+    await Queue.add(SubscriptionMail.key, {
+      meetup,
+      user,
     });
 
     return res.json(subscription);
