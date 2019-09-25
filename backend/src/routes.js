@@ -34,5 +34,6 @@ routes.post('/meetups/register/:meetupId', SubscriptionController.store);
 routes.get('/subscription', SubscriptionController.index);
 
 routes.get('/notifications', NotificationController.index);
+routes.put('/notifications/:id', NotificationController.update);
 
 export default routes;
