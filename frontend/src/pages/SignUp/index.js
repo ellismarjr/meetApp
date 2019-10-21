@@ -1,7 +1,33 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Form, Input } from '@rocketseat/unform';
+import * as Yup from 'yup';
 
-// import { Container } from './styles';
+import logo from '~/assets/logo.svg';
+
+const schema = Yup.object().shape({
+  name: Yup.string().required('O nome é obrigatório'),
+  email: Yup.string()
+    .email('Insira um e-mail válido')
+    .required('O e-mail é obrigatório'),
+  password: Yup.string()
+    .min(6, 'Mínimo de 6 caracteres')
+    .required('A senha é obrigatória'),
+});
 
 export default function SignUp() {
-  return <div />;
+  return (
+    <>
+      <img src={logo} alt="MeetApp" />
+
+      <Form schema={schema}>
+        <Input name="name" placeholder="Nome completo" />
+        <Input name="email" type="email" placeholder="Seu e-mail" />
+        <Input name="password" type="password" placeholder="Sua senha" />
+
+        <button type="submit">Acessar</button>
+        <Link to="/">Já tenho conta</Link>
+      </Form>
+    </>
+  );
 }
