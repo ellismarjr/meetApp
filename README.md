@@ -8,3 +8,7 @@ O script foi feito para facilitar na hora de iniciar as bases para o funcionamen
 
 - ./initialDatabases.sh start -> para iniciar as databases
 - ./initialDatabases.sh stop -> para parar as databases
+
+## :computer: Web preview
+
+## :iphone: Mobile preview
