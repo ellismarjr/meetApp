@@ -6,7 +6,7 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  padding: 30px;
+  padding-top: 25px;
   max-width: 940px;
   margin: 0 auto;
   display: flex;
@@ -50,6 +50,9 @@ export const Profile = styled.div`
     background: #d44059;
     color: #fff;
     font-weight: bold;
-    font-size: 16px;
+
+    h1 {
+      font-size: 16px;
+    }
   }
 `;
