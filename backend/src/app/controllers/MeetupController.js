@@ -14,6 +14,7 @@ class MeetupController {
           attributes: ['name', 'path', 'url'],
         },
       ],
+      order: [['date', 'ASC']],
     });
 
     return res.json(meetups);
