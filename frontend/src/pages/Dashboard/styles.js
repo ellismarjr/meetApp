@@ -34,9 +34,6 @@ export const Container = styled.div`
         font-weight: bold;
         margin-left: 12px;
       }
-
-      ul {
-      }
     }
   }
 `;
@@ -69,12 +66,8 @@ export const Meetup = styled.li`
     align-items: center;
 
     p {
-      margin: 30px;
+      margin: 20px;
       color: rgba(255, 255, 255, 0.6);
-    }
-
-    a {
-      margin-right: 10px;
     }
   }
 `;

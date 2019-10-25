@@ -34,9 +34,8 @@ export default function Dashboard() {
     loadMeetups();
   }, []);
 
-  function handleMeetupDetails(id) {
-    history.push('/meetupDetails', { id });
-    console.tron.log(id);
+  function handleMeetupDetails(meetup) {
+    history.push('/meetupDetails', { meetup });
   }
 
   return (
@@ -51,14 +50,11 @@ export default function Dashboard() {
 
       <MeetupList>
         {meetups.map(meetup => (
-          <Meetup onClick={() => handleMeetupDetails(meetup.id)}>
+          <Meetup key={meetup.id} onClick={() => handleMeetupDetails(meetup)}>
             <strong>{meetup.title}</strong>
             <div>
               <p>{meetup.formattedDate}</p>
-
-              <Link to="/meetupDetails">
-                <MdChevronRight size={20} color="#fff" />
-              </Link>
+              <MdChevronRight size={20} color="#fff" />
             </div>
           </Meetup>
         ))}
