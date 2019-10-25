@@ -55,6 +55,7 @@ export const Meetup = styled.li`
   margin-top: 10px;
   border-radius: 4px;
   height: 62px;
+  cursor: pointer;
 
   strong {
     color: #fff;
@@ -62,8 +63,18 @@ export const Meetup = styled.li`
     font-size: 18px;
   }
 
-  p {
-    margin: 40px;
-    color: rgba(255, 255, 255, 0.6);
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      margin: 30px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    a {
+      margin-right: 10px;
+    }
   }
 `;

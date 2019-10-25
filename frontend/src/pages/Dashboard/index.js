@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 
-import { MdAddCircleOutline } from 'react-icons/md';
+import history from '~/services/history';
+
+import { MdAddCircleOutline, MdChevronRight } from 'react-icons/md';
 import api from '~/services/api';
 
 import { Container, MeetupList, Meetup } from './styles';
@@ -31,6 +34,11 @@ export default function Dashboard() {
     loadMeetups();
   }, []);
 
+  function handleMeetupDetails(id) {
+    history.push('/meetupDetails', { id });
+    console.tron.log(id);
+  }
+
   return (
     <Container>
       <header>
@@ -43,9 +51,15 @@ export default function Dashboard() {
 
       <MeetupList>
         {meetups.map(meetup => (
-          <Meetup>
+          <Meetup onClick={() => handleMeetupDetails(meetup.id)}>
             <strong>{meetup.title}</strong>
-            <p>{meetup.formattedDate}</p>
+            <div>
+              <p>{meetup.formattedDate}</p>
+
+              <Link to="/meetupDetails">
+                <MdChevronRight size={20} color="#fff" />
+              </Link>
+            </div>
           </Meetup>
         ))}
       </MeetupList>
