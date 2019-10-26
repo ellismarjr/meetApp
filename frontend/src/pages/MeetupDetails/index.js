@@ -7,8 +7,6 @@ import api from '~/services/api';
 
 import history from '~/services/history';
 
-import image from '~/assets/image.jpg';
-
 export default function MeetupDetails({ location }) {
   const Meetup = history.location.state.meetup;
   const bannerMeetup = history.location.state.meetup.File.url;
@@ -37,7 +35,7 @@ export default function MeetupDetails({ location }) {
         </div>
       </header>
       <Content>
-        <img src={Meetup.File.url} alt="Banner meetup" />
+        <img src={bannerMeetup} alt="Banner meetup" />
         <p>{description}</p>
       </Content>
 
