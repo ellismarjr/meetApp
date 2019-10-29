@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useField } from '@rocketseat/unform';
-import { toast } from 'react-toastify';
 
 import api from '~/services/api';
 
@@ -11,8 +10,8 @@ import { Container } from './styles';
 export default function BannerInput() {
   const { defaultValue, registerField } = useField('banner');
 
-  const [image, setImage] = useState(defaultValue && defaultValue.url);
   const [file, setFile] = useState(defaultValue && defaultValue.id);
+  const [image, setImage] = useState(defaultValue && defaultValue.url);
 
   const ref = useRef();
 
@@ -27,19 +26,15 @@ export default function BannerInput() {
   }, [ref]); //eslint-disable-line
 
   async function handleBanner(e) {
-    try {
-      const data = new FormData();
+    const data = new FormData();
 
-      data.append('file', e.target.files[0]);
-      const response = await api.post('files', data);
+    data.append('file', e.target.files[0]);
+    const response = await api.post('files', data);
 
-      const { id, url } = response.data;
+    const { url, id } = response.data;
 
-      setFile(id);
-      setImage(url);
-    } catch (err) {
-      toast.error('Erro ao subir arquivo');
-    }
+    setFile(id);
+    setImage(url);
   }
 
   return (

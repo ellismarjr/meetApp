@@ -28,18 +28,20 @@ export default function DatePicker({ name, selectedDate }) {
   }, [ref.current, fieldName]);
 
   return (
-    <StyledDatePicker
-      name={fieldName}
-      locale={pt}
-      selected={selected}
-      onChange={date => setSelected(date)}
-      timeFormat="HH:mm"
-      dateFormat="dd/MM/yyyy - HH:mm"
-      placeholderText="Data e hora do evento"
-      autoComplete="off"
-      showTimeSelect
-      ref={ref}
-    />
+    <>
+      <StyledDatePicker
+        name={fieldName}
+        locale={pt}
+        selected={selected}
+        onChange={date => setSelected(date)}
+        timeFormat="HH:mm"
+        dateFormat="dd/MM/yyyy - HH:mm"
+        placeholderText="Data e hora do evento"
+        autoComplete="off"
+        showTimeSelect
+        ref={ref}
+      />
+    </>
   );
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { format, parseISO } from 'date-fns';
-import pt from 'date-fns/locale/pt';
 import { Form, Input } from '@rocketseat/unform';
+import * as Yup from 'yup';
+
 import { MdSave } from 'react-icons/md';
 
 import { toast } from 'react-toastify';
@@ -14,26 +14,25 @@ import { Container } from './styles';
 import history from '~/services/history';
 import api from '~/services/api';
 
+const schema = Yup.object().shape({
+  banner: Yup.number(),
+  title: Yup.string().required('O titulo é obrigatório'),
+  description: Yup.string().required('A descrição é obrigatória.'),
+  date: Yup.date().required('Você precisa preencher uma data.'),
+  location: Yup.string().required('A localização do seu meetup é obrigatória.'),
+});
+
 export default function NewMeetup({ location }) {
   async function handleSubmit(data) {
-    let response = null;
     try {
       if (history.location.state) {
         const id = history.location.state.meetup.id;
-        response = await api.put(`meetups/${id}`, data);
+        await api.put(`meetups/${id}`, data);
       } else {
-        response = await api.post('meetups', data);
+        console.tron.log('create');
+        console.tron.log(data);
+        await api.post('meetups', data);
       }
-      const meetup = {
-        ...response.data,
-        formatedDate: format(
-          parseISO(response.data.date),
-          "d 'de' MMMM', às' HH:mm",
-          {
-            locale: pt,
-          }
-        ),
-      };
 
       toast.success('Meetup salvo com sucesso');
 
@@ -42,13 +41,15 @@ export default function NewMeetup({ location }) {
       toast.error('Erro ao salvar meetup');
     }
   }
+
   return (
     <Container>
       <Form
-        onSubmit={handleSubmit}
         initialData={
           history.location.state ? history.location.state.meetup : null
         }
+        onSubmit={handleSubmit}
+        schema={schema}
       >
         <BannerInput name="banner" />
         <Input name="title" placeholder="Título do meetup" />
