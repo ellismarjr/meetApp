@@ -38,8 +38,6 @@ class MeetupController {
      */
 
     const { title, description, location, date, banner } = req.body;
-    // const { originalname: name, filename: path } = req.file;
-    console.log(req.userId);
 
     const hourStart = startOfHour(parseISO(date));
     if (isBefore(hourStart, new Date())) {
