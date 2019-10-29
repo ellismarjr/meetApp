@@ -8,7 +8,7 @@ import { MdCameraAlt } from 'react-icons/md';
 
 import { Container } from './styles';
 
-export default function AvatarInput() {
+export default function BannerInput() {
   const { defaultValue, registerField } = useField('banner');
 
   const [image, setImage] = useState(defaultValue && defaultValue.url);
@@ -31,9 +31,7 @@ export default function AvatarInput() {
       const data = new FormData();
 
       data.append('file', e.target.files[0]);
-      console.tron.log(data);
       const response = await api.post('files', data);
-      console.log(response.data);
 
       const { id, url } = response.data;
 
@@ -41,7 +39,6 @@ export default function AvatarInput() {
       setImage(url);
     } catch (err) {
       toast.error('Erro ao subir arquivo');
-      console.tron.log(err);
     }
   }
 

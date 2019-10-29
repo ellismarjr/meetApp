@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 
 import { MdEdit, MdDeleteForever, MdEvent, MdPlace } from 'react-icons/md';
 import { Container, Content, Footer } from './styles';
@@ -7,17 +6,27 @@ import { Container, Content, Footer } from './styles';
 import history from '~/services/history';
 
 export default function MeetupDetails({ location }) {
-  const Meetup = history.location.state.meetup;
-  const bannerMeetup = history.location.state.meetup.File.url;
+  const currentMeetup = history.location.state.meetup;
+  // const bannerMeetup = history.location.state.meetup.File.url;
 
-  const { title, description, location: place, formattedDate, banner } = Meetup;
+  const {
+    title,
+    description,
+    location: place,
+    formattedDate,
+    bannerFile,
+  } = currentMeetup;
+
+  function handleEdit() {
+    history.push('/newMeetup', { meetup: currentMeetup });
+  }
 
   return (
     <Container>
       <header>
         <h1>{title}</h1>
         <div>
-          <button type="button" id="edit">
+          <button type="button" id="edit" onClick={handleEdit}>
             <MdEdit size={20} color="#fff" />
             <p>Editar</p>
           </button>
@@ -28,7 +37,7 @@ export default function MeetupDetails({ location }) {
         </div>
       </header>
       <Content>
-        <img src={bannerMeetup} alt="Banner meetup" />
+        <img src={bannerFile.url} alt="Banner meetup" />
         <p>{description}</p>
       </Content>
 

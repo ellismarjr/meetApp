@@ -7,11 +7,13 @@ import { useField } from '@rocketseat/unform';
 
 import { StyledDatePicker } from './styles';
 
-export default function DatePicker({ name }) {
+export default function DatePicker({ name, selectedDate }) {
   const ref = useRef();
 
-  const { fieldName, registerField, defaultValue } = useField(name);
-  const [selected, setSelected] = useState(defaultValue);
+  const { fieldName, registerField } = useField(name);
+  const [selected, setSelected] = useState(
+    selectedDate ? parseISO(selectedDate) : new Date()
+  );
 
   useEffect(() => {
     registerField({

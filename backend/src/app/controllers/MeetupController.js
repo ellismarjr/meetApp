@@ -8,9 +8,11 @@ class MeetupController {
   async index(req, res) {
     const meetups = await Meetup.findAll({
       where: { provider_id: req.userId },
+      attributes: ['id', 'title', 'description', 'location', 'date'],
       include: [
         {
           model: File,
+          as: 'bannerFile',
           attributes: ['name', 'path', 'url'],
         },
       ],
@@ -108,12 +110,14 @@ class MeetupController {
     const { banner } = checkUserMeetup;
     const file = await File.findByPk(banner);
 
-    const { originalname: name, filename: path } = req.file;
+    // if (req.file) {
+    //   const { originalname: name, filename: path } = req.file;
 
-    await file.update({
-      name,
-      path,
-    });
+    //   await file.update({
+    //     name,
+    //     path,
+    //   });
+    // }
 
     const meetup = await checkUserMeetup.update(req.body);
 

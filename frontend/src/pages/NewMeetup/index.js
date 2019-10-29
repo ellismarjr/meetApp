@@ -6,7 +6,7 @@ import { MdSave } from 'react-icons/md';
 
 import { toast } from 'react-toastify';
 
-import AvatarInput from './AvatarInput';
+import BannerInput from '~/components/BannerInput';
 import DatePicker from '~/components/DatePicker';
 
 import { Container } from './styles';
@@ -14,22 +14,43 @@ import { Container } from './styles';
 import history from '~/services/history';
 import api from '~/services/api';
 
-export default function NewMeetup() {
+export default function NewMeetup({ location }) {
   async function handleSubmit(data) {
+    let response = null;
     try {
-      console.tron.log(data);
-      const response = await api.post('meetups', data);
-      const meetup = response.data;
+      if (history.location.state) {
+        const id = history.location.state.meetup.id;
+        response = await api.put(`meetups/${id}`, data);
+      } else {
+        response = await api.post('meetups', data);
+      }
+      const meetup = {
+        ...response.data,
+        formatedDate: format(
+          parseISO(response.data.date),
+          "d 'de' MMMM', às' HH:mm",
+          {
+            locale: pt,
+          }
+        ),
+      };
+
       toast.success('Meetup salvo com sucesso');
-      history.push('/dashboard', { meetup });
+
+      history.push('/dashboard');
     } catch (err) {
       toast.error('Erro ao salvar meetup');
     }
   }
   return (
     <Container>
-      <Form onSubmit={handleSubmit}>
-        <AvatarInput name="banner" />
+      <Form
+        onSubmit={handleSubmit}
+        initialData={
+          history.location.state ? history.location.state.meetup : null
+        }
+      >
+        <BannerInput name="banner" />
         <Input name="title" placeholder="Título do meetup" />
 
         <Input
@@ -37,7 +58,12 @@ export default function NewMeetup() {
           className="description-textarea"
           placeholder="Descrição completa"
         />
-        <DatePicker name="date" />
+        <DatePicker
+          name="date"
+          selectedDate={
+            history.location.state && history.location.state.meetup.date
+          }
+        />
         <Input name="location" placeholder="Localização" />
 
         <button id="newMeetup" type="submit">
