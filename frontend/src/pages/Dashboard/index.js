@@ -38,11 +38,15 @@ export default function Dashboard() {
     history.push('/meetupDetails', { meetup });
   }
 
+  function handleNewMeetup() {
+    history.push('/newMeetup');
+  }
+
   return (
     <Container>
       <header>
         <h1>Meus meetups</h1>
-        <button type="button">
+        <button type="button" onClick={handleNewMeetup}>
           <MdAddCircleOutline size={20} color="#fff" />
           <p>Novo meetup</p>
         </button>

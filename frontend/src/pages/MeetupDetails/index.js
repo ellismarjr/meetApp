@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { MdEdit, MdDeleteForever, MdEvent, MdPlace } from 'react-icons/md';
 import { Container, Content, Footer } from './styles';
-import api from '~/services/api';
 
 import history from '~/services/history';
 
@@ -12,12 +11,6 @@ export default function MeetupDetails({ location }) {
   const bannerMeetup = history.location.state.meetup.File.url;
 
   const { title, description, location: place, formattedDate, banner } = Meetup;
-
-  useEffect(() => {
-    async function loadMeetup() {}
-
-    loadMeetup();
-  });
 
   return (
     <Container>

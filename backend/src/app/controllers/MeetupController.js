@@ -35,20 +35,21 @@ class MeetupController {
      * Check past dates
      */
 
-    const { title, description, location, date } = req.body;
-    const { originalname: name, filename: path } = req.file;
+    const { title, description, location, date, banner } = req.body;
+    // const { originalname: name, filename: path } = req.file;
+    console.log(req.userId);
 
     const hourStart = startOfHour(parseISO(date));
     if (isBefore(hourStart, new Date())) {
       return res.status(400).json({ error: 'Past dates are not permitted' });
     }
 
-    const file = await File.create({
-      name,
-      path,
-    });
+    // const file = await File.create({
+    //   name,
+    //   path,
+    // });
 
-    const { id: banner_id } = file;
+    // const { id: banner_id } = file;
 
     const meetup = await Meetup.create({
       title,
@@ -56,7 +57,7 @@ class MeetupController {
       location,
       date,
       provider_id: req.userId,
-      banner: banner_id,
+      banner,
     });
 
     return res.json(meetup);
